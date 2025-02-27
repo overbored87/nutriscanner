@@ -21,19 +21,20 @@ openai.api_key = OPENAI_API_KEY
 st.title("🍽️ AI Nutritional Scanner")
 st.write("Upload or take a photo of a food menu/signboard and get nutritional info!")
 
-# Image capture using HTML5 camera API
-st.write("### Capture or Upload an Image")
-image_capture_html = """
-<input type="file" accept="image/*" capture="environment">
-"""
-st.markdown(image_capture_html, unsafe_allow_html=True)
-
-uploaded_file = st.file_uploader("Or upload an image", type=["png", "jpg", "jpeg"])
+# Streamlit's built-in file uploader with camera option
+uploaded_file = st.file_uploader("Take a photo or upload an image", type=["png", "jpg", "jpeg"])
 
 if uploaded_file:
     # Load image
     image = Image.open(uploaded_file)
     st.image(image, caption="Uploaded Image", use_container_width=True)
+    
+    # Show processing message
+    with st.spinner("Analyzing image..."):
+       # Convert image to base64 string
+       img_bytes = io.BytesIO()
+       image.save(img_bytes, format="JPEG")
+       img_base64 = base64.b64encode(img_bytes.getvalue()).decode("utf-8")
     
     # Convert image to base64 string
     img_bytes = io.BytesIO()
