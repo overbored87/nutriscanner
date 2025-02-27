@@ -47,7 +47,7 @@ if uploaded_file:
         messages=[
             {"role": "system", "content": "Extract food items and provide estimated calories and sodium content."},
             {"role": "user", "content": [
-                {"type": "text", "text": "What food items are in this image? Provide estimated calories and sodium content."},
+                {"type": "text", "text": "What food items are in this image? Provide estimated calories and sodium content.End response with The recommended daily sodium intake is less than 2,000mg."},
                 {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{img_base64}"}}
             ]}
         ]
