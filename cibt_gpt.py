@@ -18,8 +18,8 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 openai.api_key = OPENAI_API_KEY
 
 # Streamlit UI
-st.title("🍽️ AI Nutritional Scanner")
-st.write("Upload or take a photo of a food menu/signboard and get nutritional info!")
+st.title("🛂📷 Can I Bring This?")
+st.write("Take a photo of items to check if they're allowed to be brought into Singapore")
 
 # Streamlit's built-in file uploader with camera option
 uploaded_file = st.file_uploader("Take a photo or upload an image", type=["png", "jpg", "jpeg"])
@@ -45,9 +45,9 @@ if uploaded_file:
     response = openai.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "system", "content": "Extract food items and provide estimated calories and sodium content."},
+            {"role": "system", "content": "Extract items and determine based on Singapore's import rules whether it is allowed, declare at customs, or prohibited."},
             {"role": "user", "content": [
-                {"type": "text", "text": "What food items are in this image? Provide estimated calories and sodium content.End response with The recommended daily sodium intake is less than 2,000mg."},
+                {"type": "text", "text": "What items are in this image? For each item, label whether it is ✅ Allowed, ⚠️ Declare at customs, ⛔ Prohibited."},
                 {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{img_base64}"}}
             ]}
         ]
@@ -55,7 +55,7 @@ if uploaded_file:
     
     # Extracted text
     extracted_text = response.choices[0].message.content
-    st.write("### Estimated Nutritional Information")
+    st.write("### Here are the extracted items and whether you can bring them into Singapore")
     st.write(extracted_text)
     
     st.success("Done! Try another image.")
